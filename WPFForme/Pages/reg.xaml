@@ -35,6 +35,7 @@
                             <CheckBox x:Name="lask" Content="Ласковый"/>
                         </StackPanel>
                     </GroupBox>
+                    <CheckBox x:Name="admin" Content="Администратор" IsChecked="False" Visibility="Collapsed"/>
                     <Button x:Name="Zapbut" Content="Записать" Style="{StaticResource butnot}" Click="Zapbut_Click" />
                     <Button Content="Назад" x:Name="BackBtn" Style="{StaticResource butnot}" Click="BackBtn_Click"/>
 

@@ -65,6 +65,10 @@ namespace WPFForme.Pages
             LoadCl.MFrame.Navigate(new reg());
         }
 
-
+        private void RegBtn_Click_1(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+            
+        }
     }
 }

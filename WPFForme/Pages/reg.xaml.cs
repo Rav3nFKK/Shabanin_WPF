@@ -20,6 +20,7 @@ namespace WPFForme.Pages
     /// </summary>
     public partial class reg : Page
     {
+        int flag = 0;
         public reg()
         {
             InitializeComponent();
@@ -35,22 +36,43 @@ namespace WPFForme.Pages
                 traits2[i] = tr.trait;
                 i++;
             }
-            //dobr.Content = traits2[0];
-            //nezh.Content = traits2[1];
-            //lask.Content = traits2[2];
+        }
 
+        public reg(int c)
+        {
+            InitializeComponent();
+            list1.ItemsSource = BaseConnect.BaseModel.genders.ToList();
+            list1.SelectedValuePath = "id";
+            list1.DisplayMemberPath = "gender";
+
+            string[] traits2 = new string[3];
+            List<traits> traits1 = BaseConnect.BaseModel.traits.ToList();
+            int i = 0;
+            foreach (traits tr in traits1)
+            {
+                traits2[i] = tr.trait;
+                i++;
+            }
+            admin.Visibility = Visibility.Visible;
+            flag = c;
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
             LoadCl.MFrame.GoBack();
+            
         }
 
         private void Zapbut_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                auth LogPass = new auth() { login = Logtxt.Text, password = Passtxt.Password, role = 2 };
+                int adm = 2;
+                if(admin.IsChecked ==true)
+                {
+                    adm = 1;
+                }
+                auth LogPass = new auth() { login = Logtxt.Text, password = Passtxt.Password, role = adm};
                 BaseConnect.BaseModel.auth.Add(LogPass);
                 BaseConnect.BaseModel.SaveChanges();
 
@@ -90,6 +112,10 @@ namespace WPFForme.Pages
                 BaseConnect.BaseModel.SaveChanges();
 
                 MessageBox.Show("Пользователь " + Logtxt.Text + ", успешно зарегистрирован");
+                if (flag == 0)
+                    LoadCl.MFrame.GoBack();
+                else
+                    LoadCl.MFrame.Navigate(new UsersListPG());
             }
             catch
             {

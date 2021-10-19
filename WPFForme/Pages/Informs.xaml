@@ -28,8 +28,8 @@
                                 <TextBlock x:Name="DopInfotxt"/>
                             </StackPanel>
                         </GroupBox>
-         
-                            <Button Content="Назад" x:Name="BackBtn" Style="{StaticResource butnot}" Click="BackBtn_Click"/>
+
+                        <Button Content="Назад" x:Name="BackBtn" Style="{StaticResource butnot}" Click="BackBtn_Click"/>
                 
                     </StackPanel>
                 </GroupBox>

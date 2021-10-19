@@ -28,6 +28,7 @@ namespace WPFForme.Pages
 
         private void lbTraits_Loaded(object sender, RoutedEventArgs e)
         {
+          
             ListBox lb = (ListBox)sender;
             int id = Convert.ToInt32(lb.Uid);
             lb.ItemsSource = BaseConnect.BaseModel.users_to_traits.Where(x => x.id_user == id).ToList();
@@ -56,7 +57,8 @@ namespace WPFForme.Pages
 
         private void createbtn_Click(object sender, RoutedEventArgs e)
         {
-            LoadCl.MFrame.Navigate(new reg());
+            LoadCl.MFrame.Navigate(new reg(1));
+          
         }
 
         private void back_Click(object sender, RoutedEventArgs e)

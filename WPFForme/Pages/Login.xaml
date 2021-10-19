@@ -10,7 +10,7 @@
 
     <Grid>
         <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <GroupBox Header="Введите данные" Height="182" Width="186">
+            <GroupBox Header="Введите данные" Height="199" Width="186">
                 <StackPanel>
                     <GroupBox Header="Введите логин" Height="46" Margin="0,0,-0.4,0">
                         <TextBox x:Name="Logtxt"/>
@@ -20,6 +20,7 @@
                     </GroupBox>
                     <Button Content="Авторизоваться" x:Name="LoginBtn" Style="{StaticResource butnot}" Click="LoginBtn_Click" IsDefault="True" Height="25" Margin="1"/>
                     <Button Content="Регистрация" x:Name="RegBtn" Style="{StaticResource butnot}" Click="RegBtn_Click" IsDefault="True" Height="25" Margin="1"/>
+                    <Button Content="Выйти" x:Name="outbtn" Style="{StaticResource butnot}" Click="RegBtn_Click_1" IsDefault="True" Height="25" Margin="1"/>
                 </StackPanel>
             </GroupBox>
         </WrapPanel>
