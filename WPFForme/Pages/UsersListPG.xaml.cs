@@ -61,7 +61,7 @@ namespace WPFForme.Pages
 
         private void back_Click(object sender, RoutedEventArgs e)
         {
-            LoadCl.MFrame.GoBack();s
+            LoadCl.MFrame.GoBack();
         }
     }
 }
