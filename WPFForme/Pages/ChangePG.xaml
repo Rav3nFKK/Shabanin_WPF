@@ -1,0 +1,49 @@
+﻿<Page x:Class="WPFForme.Pages.ChangePG"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPFForme.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ChangePG">
+
+    <Grid>
+        <ScrollViewer  VerticalScrollBarVisibility="Auto">
+            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+
+                <GroupBox Header="Ваши данне" Margin="20">
+                    <StackPanel >
+                        <GroupBox Header="Логин">
+                            <TextBox x:Name="Logtxt" TextChanged="Logtxt_TextChanged"/>
+                        </GroupBox>
+                        <GroupBox Header="Пароль">
+                            <TextBox x:Name="pass" TextChanged ="Logtxt_TextChanged"/>
+                        </GroupBox>
+                        <GroupBox Header="Имя">
+                            <TextBox x:Name="Nametxt" TextChanged ="Logtxt_TextChanged"/>
+                        </GroupBox>
+                        <GroupBox Header="Дата рождения">
+                            <DatePicker x:Name="drtxt" SelectedDateChanged="drtxt_SelectedDateChanged"/>
+                        </GroupBox>
+                        <GroupBox Header="Пол">
+                            <ListBox x:Name="genderLt" SelectionChanged="drtxt_SelectedDateChanged"/>
+                        </GroupBox>
+                        <GroupBox Header="Дополнительная информация">
+                            <StackPanel>
+                                <CheckBox x:Name="d1" Checked="d1_Checked" Unchecked="d1_Checked"/>
+                                <CheckBox x:Name="d2"  Checked="d1_Checked" Unchecked="d1_Checked"/>
+                                <CheckBox x:Name="d3"  Checked="d1_Checked" Unchecked="d1_Checked"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <Button Content="Сохранить" x:Name="SaveBtn" Style="{StaticResource butnot}" Click="SaveBtn_Click"/>
+                        <Button Content="Назад" x:Name="BackBtn" Style="{StaticResource butnot}" Click="BackBtn_Click"/>
+
+                    </StackPanel>
+                </GroupBox>
+
+            </WrapPanel>
+        </ScrollViewer>
+
+    </Grid>
+</Page>

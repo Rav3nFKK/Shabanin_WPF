@@ -1,0 +1,31 @@
+﻿<Page x:Class="WPFForme.Pages.AdminPanel"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPFForme.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AdminPanel">
+
+    <Grid>
+        <ScrollViewer>
+            <StackPanel>
+                <DataGrid x:Name="dgUsers" AutoGenerateColumns="False"  IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Логин" Binding="{Binding login}"/>
+                        <DataGridTextColumn Header="Пароль" Binding="{Binding password}"/>
+                        <DataGridTextColumn Header="Роль" Binding="{Binding roles.role}"/>
+                        <DataGridTextColumn Header="Имя" Binding="{Binding users.name}"/>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding users.dr}"/>
+                        <DataGridTextColumn Header="Пол" Binding="{Binding users.genders.gender}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock Text="Удаление"/>
+                <Button x:Name="Del" Content="Del" Click="Del_Click"/>
+                <Button x:Name="UpdateBTN" Content="Update" Click="UpdateBTN_Click"/>
+                <Button x:Name="Backbtn" Content="Назад" IsCancel="True" Click="Backbtn_Click"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
