@@ -20,15 +20,22 @@ namespace WPFForme.Pages
     /// </summary>
     public partial class UsersListPG : Page
     {
+        List<users> users;
         public UsersListPG()
         {
             InitializeComponent();
             lbUsersList.ItemsSource = BaseConnect.BaseModel.users.ToList();
+            users = BaseConnect.BaseModel.users.ToList();
+
+            List<genders> genders = BaseConnect.BaseModel.genders.ToList();
+            Gen.ItemsSource = genders;
+            Gen.SelectedValuePath = "id";
+            Gen.DisplayMemberPath = "gender";
         }
 
         private void lbTraits_Loaded(object sender, RoutedEventArgs e)
         {
-          
+
             ListBox lb = (ListBox)sender;
             int id = Convert.ToInt32(lb.Uid);
             lb.ItemsSource = BaseConnect.BaseModel.users_to_traits.Where(x => x.id_user == id).ToList();
@@ -58,12 +65,32 @@ namespace WPFForme.Pages
         private void createbtn_Click(object sender, RoutedEventArgs e)
         {
             LoadCl.MFrame.Navigate(new reg(1));
-          
+
         }
 
         private void back_Click(object sender, RoutedEventArgs e)
         {
             LoadCl.MFrame.GoBack();
+        }
+
+        private void btnSort_Click(object sender, RoutedEventArgs e)
+        {
+            List<users> lt = users.ToList();
+            if (tbStart.Text != "" && tbFinish.Text != "")
+            {
+                int start = Convert.ToInt32(tbStart.Text) - 1;
+                int finish = Convert.ToInt32(tbFinish.Text);
+                lt = users.Skip(start).Take(finish - start).ToList();
+            }
+            if (Gen.SelectedItem != null)
+            lt = lt.Where(x => x.gender == Convert.ToInt32(Gen.SelectedValue)).ToList();
+
+            lbUsersList.ItemsSource = lt;
+        }
+
+        private void btnRset_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
