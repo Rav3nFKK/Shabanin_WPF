@@ -30,26 +30,32 @@
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="65"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Column="0" Grid.Row="0">
-            <StackPanel Orientation="Horizontal" >
-                <GroupBox Header="От">
-                    <TextBox Name="tbStart" Width="50" FontSize="14"></TextBox>
-                </GroupBox>
-                <GroupBox Header="До">
-                    <TextBox Name="tbFinish" Width="50" FontSize="14"></TextBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment ="Center" >
+                <GroupBox Header="Фильтр по строкам">
+                    <StackPanel Orientation="Horizontal">
+                        <GroupBox Header="От">
+                            <TextBox Name="tbStart" Width="50" FontSize="14"></TextBox>
+                        </GroupBox>
+                        <GroupBox Header="До">
+                            <TextBox Name="tbFinish" Width="50" FontSize="14"></TextBox>
+                        </GroupBox>
+                    </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Пол">
-                    <ComboBox Name="Gen" Width="100"></ComboBox>
+                    <ComboBox Name="Gen" Width="100" VerticalAlignment="Center"/>
                 </GroupBox>
-                <StackPanel VerticalAlignment="Bottom">
-                    <Button Name="btnSort" Style="{StaticResource butnot}" Content="Отфильтровать" Click="btnSort_Click" ></Button>
-                    <Button Name="btnRset" Style="{StaticResource butnot}" Content="Сбросить" Click="btnRset_Click"  ></Button>
+                <StackPanel VerticalAlignment="Center">
+                    <Button x:Name="btnSort" Style="{StaticResource butnot}" Content="Отфильтровать" Click="btnSort_Click" Margin="0.5"/>
+                    <Button x:Name="btnRset" Style="{StaticResource butnot}" Content="Сбросить" Click="btnRset_Click"  Margin="0.5"/>
                 </StackPanel>
-                <Button x:Name="createbtn" Content="Создать пользователя" Click="createbtn_Click" Style="{DynamicResource butnot}" Width="150" Margin="0.25"/>
-                <Button x:Name="back" Content="Выйти" Click="back_Click" Style="{DynamicResource butnot}" Width="75" Margin="0.25"/>
+                <StackPanel VerticalAlignment="Center">
+                    <Button x:Name="createbtn" Content="Создать пользователя" Click="createbtn_Click" Style="{DynamicResource butnot}" Width="150" Margin="0.5" VerticalAlignment="Center"/>
+                    <Button x:Name="back" Content="Выйти" Click="back_Click" Style="{DynamicResource butnot}"  Margin="0.5" VerticalAlignment="Center"/>
+                </StackPanel>
             </StackPanel>
 
         </DockPanel>
