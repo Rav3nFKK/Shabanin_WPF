@@ -25,8 +25,8 @@ namespace WPFForme.Pages
         {
             InitializeComponent();
             lbUsersList.ItemsSource = BaseConnect.BaseModel.users.ToList();
+           
             users = BaseConnect.BaseModel.users.ToList();
-
             List<genders> genders = BaseConnect.BaseModel.genders.ToList();
             Gen.ItemsSource = genders;
             Gen.SelectedValuePath = "id";
@@ -78,18 +78,45 @@ namespace WPFForme.Pages
             List<users> lt = users.ToList();
             if (tbStart.Text != "" && tbFinish.Text != "")
             {
-                int start = Convert.ToInt32(tbStart.Text) - 1;
-                int finish = Convert.ToInt32(tbFinish.Text);
-                lt = users.Skip(start).Take(finish - start).ToList();
+                if (Convert.ToInt32(tbStart.Text) >= 0)
+                {
+                    if (Convert.ToInt32(tbFinish.Text) < users.Count)
+                    {
+                        int start = Convert.ToInt32(tbStart.Text) - 1;
+                        int finish = Convert.ToInt32(tbFinish.Text);
+                        lt = users.Skip(start).Take(finish - start).ToList();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Строка, до которой необходимо выбрать элементы, больше максимальной!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                        int start = Convert.ToInt32(tbStart.Text) - 1;
+                        int finish = Convert.ToInt32(tbFinish.Text);
+                        lt = users.Skip(start).Take(finish - start).ToList();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Строка, от которой необходимо реализовать выборку - отрицательная.\nДля корректной выборки, поправьте данное значение.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                    int start = Convert.ToInt32(tbStart.Text) - 1;
+                    int finish = Convert.ToInt32(tbFinish.Text);
+                    lt = users.Skip(start).Take(finish - start).ToList();
+                }
+
+
             }
             if (Gen.SelectedItem != null)
-            lt = lt.Where(x => x.gender == Convert.ToInt32(Gen.SelectedValue)).ToList();
+                lt = lt.Where(x => x.gender == Convert.ToInt32(Gen.SelectedValue)).ToList();
 
             lbUsersList.ItemsSource = lt;
         }
 
         private void btnRset_Click(object sender, RoutedEventArgs e)
         {
+            tbStart.Text = null;
+            tbFinish.Text = null;
+            Gen.SelectedItem = null;
+            List<users> lt = users.ToList();
+            lbUsersList.ItemsSource = lt;
 
         }
     }
