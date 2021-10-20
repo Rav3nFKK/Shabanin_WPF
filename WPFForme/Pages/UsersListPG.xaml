@@ -38,10 +38,10 @@
                 <GroupBox Header="Фильтр по строкам">
                     <StackPanel Orientation="Horizontal">
                         <GroupBox Header="От">
-                            <TextBox Name="tbStart" Width="50" FontSize="14"></TextBox>
+                            <TextBox Name="tbStart" Width="50" FontSize="14" PreviewTextInput="tbStart_PreviewTextInput"/>
                         </GroupBox>
                         <GroupBox Header="До">
-                            <TextBox Name="tbFinish" Width="50" FontSize="14"></TextBox>
+                            <TextBox Name="tbFinish" Width="50" FontSize="14" PreviewTextInput="tbStart_PreviewTextInput"/>
                         </GroupBox>
                     </StackPanel>
                 </GroupBox>

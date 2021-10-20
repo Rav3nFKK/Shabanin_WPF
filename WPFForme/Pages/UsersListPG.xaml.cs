@@ -70,7 +70,7 @@ namespace WPFForme.Pages
 
         private void back_Click(object sender, RoutedEventArgs e)
         {
-            LoadCl.MFrame.GoBack();
+            LoadCl.MFrame.Navigate(new Login());
         }
 
         private void btnSort_Click(object sender, RoutedEventArgs e)
@@ -88,7 +88,7 @@ namespace WPFForme.Pages
                     }
                     else
                     {
-                        MessageBox.Show("Строка, до которой необходимо выбрать элементы, больше максимальной!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("Строка, до которой необходимо выбрать элементы, больше максимальной. \nДля корректной работы фильтра, поправьте данное значение.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
                         int start = Convert.ToInt32(tbStart.Text) - 1;
                         int finish = Convert.ToInt32(tbFinish.Text);
                         lt = users.Skip(start).Take(finish - start).ToList();
@@ -96,7 +96,7 @@ namespace WPFForme.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Строка, от которой необходимо реализовать выборку - отрицательная.\nДля корректной выборки, поправьте данное значение.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Строка, от которой необходимо реализовать выборку - отрицательная.\nДля корректной работы фильтра, поправьте данное значение.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
                     int start = Convert.ToInt32(tbStart.Text) - 1;
                     int finish = Convert.ToInt32(tbFinish.Text);
                     lt = users.Skip(start).Take(finish - start).ToList();
@@ -118,6 +118,11 @@ namespace WPFForme.Pages
             List<users> lt = users.ToList();
             lbUsersList.ItemsSource = lt;
 
+        }
+
+        private void tbStart_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !(Char.IsDigit(e.Text, 0));
         }
     }
 }
