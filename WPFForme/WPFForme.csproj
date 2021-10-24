@@ -82,6 +82,9 @@
     <Compile Include="Pages\ChangePG.xaml.cs">
       <DependentUpon>ChangePG.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Dlltest.xaml.cs">
+      <DependentUpon>Dlltest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\UsersListPG.xaml.cs">
       <DependentUpon>UsersListPG.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ChangePG.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dlltest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -206,6 +213,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\drSr\drSr.csproj">
+      <Project>{6998d3e2-e456-402c-a2c0-5678d93b6f1b}</Project>
+      <Name>drSr</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

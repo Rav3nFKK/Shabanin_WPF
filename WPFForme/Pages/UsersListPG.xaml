@@ -34,23 +34,27 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Column="0" Grid.Row="0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment ="Center" >
+            <StackPanel Orientation="Horizontal">
                 <GroupBox Header="Фильтр по строкам">
                     <StackPanel Orientation="Horizontal">
                         <GroupBox Header="От">
-                            <TextBox Name="tbStart" Width="50" FontSize="14" PreviewTextInput="tbStart_PreviewTextInput"/>
+                            <TextBox Name="tbStart" Width="50" FontSize="14" PreviewTextInput="tbStart_PreviewTextInput" SelectionChanged="Filter"/>
                         </GroupBox>
                         <GroupBox Header="До">
-                            <TextBox Name="tbFinish" Width="50" FontSize="14" PreviewTextInput="tbStart_PreviewTextInput"/>
+                            <TextBox Name="tbFinish" Width="50" FontSize="14" PreviewTextInput="tbStart_PreviewTextInput" SelectionChanged="Filter"/>
                         </GroupBox>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Пол">
-                    <ComboBox Name="Gen" Width="100" VerticalAlignment="Center"/>
+                    <ComboBox Name="Gen" Width="100" VerticalAlignment="Center" SelectionChanged="Filter"/>
                 </GroupBox>
+                <GroupBox Header="Имя" Margin="0,0,0,-0.2" Width="115">
+                    <TextBox x:Name="txtNameFilter" TextChanged="Filter" Margin="0,9,0.2,9.6"/>
+                </GroupBox>
+                
                 <StackPanel VerticalAlignment="Center">
-                    <Button x:Name="btnSort" Style="{StaticResource butnot}" Content="Отфильтровать" Click="btnSort_Click" Margin="0.5"/>
                     <Button x:Name="btnRset" Style="{StaticResource butnot}" Content="Сбросить" Click="btnRset_Click"  Margin="0.5"/>
+                    <Button x:Name="DLlL" Style="{StaticResource butnot}" Content="DLL" Click="DLlL_Click"  Margin="0.5"/>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center">
                     <Button x:Name="createbtn" Content="Создать пользователя" Click="createbtn_Click" Style="{DynamicResource butnot}" Width="150" Margin="0.5" VerticalAlignment="Center"/>
@@ -58,6 +62,21 @@
                 </StackPanel>
             </StackPanel>
 
+            <GroupBox Header="Записей на странице">
+                <TextBox x:Name="txtPageCount" TextChanged="txtPageCount_TextChanged" Margin="0,9,0.2,9.6"/>
+            </GroupBox>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10">
+                <TextBlock x:Name="txtPrev" Uid="prev" Text="Пред." MouseDown="GoPage_MouseDown"/>
+                <TextBlock x:Name="txt1" Uid="1" Text=" 1 " MouseDown="GoPage_MouseDown"/>
+                <TextBlock x:Name="txt2" Uid="2" Text=" 2 " MouseDown="GoPage_MouseDown"/>
+                <TextBlock x:Name="txt3" Uid="3" Text=" 3 " MouseDown="GoPage_MouseDown"/>
+                <TextBlock x:Name="txt4" Uid="4" Text=" 4 " MouseDown="GoPage_MouseDown"/>
+                <TextBlock x:Name="txt5" Uid="5" Text=" 5 " MouseDown="GoPage_MouseDown"/>
+                <TextBlock x:Name="txtNext" Uid="next" Text="След.." MouseDown="GoPage_MouseDown"/>
+
+            </StackPanel>
+            <TextBlock x:Name="txtCurentPage"/>
         </DockPanel>
         <ListBox x:Name="lbUsersList" ItemTemplate ="{StaticResource DT1}" Grid.Column="1" Grid.Row="1" />
 
