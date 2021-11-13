@@ -72,13 +72,13 @@ namespace WPFForme.Pages
         }
         private void Filter(object sender, RoutedEventArgs e)
         {
-
+            lt = users;
             //фильтр по строкам
             try
             {
                 int start = Convert.ToInt32(tbStart.Text) - 1;
                 int finish = Convert.ToInt32(tbFinish.Text);
-                lt = users.Skip(start).Take(finish - start).ToList();
+                lt = lt.Skip(start).Take(finish - start).ToList();
 
             }
             catch
@@ -174,6 +174,9 @@ namespace WPFForme.Pages
                         break;
                 }
 
+                if (currpg < 1) currpg = 1;
+                if (currpg >= countpage) currpg = countpage;
+
                 //отрисовка
                 if (currpg < 3)
                 {
@@ -203,8 +206,7 @@ namespace WPFForme.Pages
                 }
                 txtCurentPage.Text = "Текущая страница: " + (currpg).ToString();
 
-                if (currpg < 1) currpg = 1;
-                if (currpg >= countpage) currpg = countpage;
+               
 
                 lt = users.Skip(currpg * countzap - countzap).Take(countzap).ToList();
                 lbUsersList.ItemsSource = lt;
