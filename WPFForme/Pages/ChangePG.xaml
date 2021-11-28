@@ -36,12 +36,23 @@
                                 <CheckBox x:Name="d3"  Checked="d1_Checked" Unchecked="d1_Checked"/>
                             </StackPanel>
                         </GroupBox>
+                        <GroupBox Header="Аватарка">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                <Image x:Name="Image" Loaded="Image_Loaded"  Width="150" Height="150"/>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="Туда" Name="btnPrev"  Click="imgChange" Style="{StaticResource butnot}" Margin="20"/>
+                                    <Button Content="Сюда" Name="btnNext" Click="imgChange" Style="{StaticResource butnot}" Margin="20"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
                         <Button Content="Сохранить" x:Name="SaveBtn" Style="{StaticResource butnot}" Click="SaveBtn_Click"/>
                         <Button Content="Назад" x:Name="BackBtn" Style="{StaticResource butnot}" Click="BackBtn_Click"/>
 
                     </StackPanel>
                 </GroupBox>
-
+           
             </WrapPanel>
         </ScrollViewer>
 

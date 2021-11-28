@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using drSr;
 
+
 namespace WPFForme.Pages
 {
     /// <summary>
@@ -23,10 +27,12 @@ namespace WPFForme.Pages
     {
         List<users> users;
         List<users> lt;
+        PageChange pc = new PageChange();
         public UsersListPG()
         {
             InitializeComponent();
             lbUsersList.ItemsSource = BaseConnect.BaseModel.users.ToList();
+            users = BaseConnect.BaseModel.users.ToList();
             lt = users;
 
             users = BaseConnect.BaseModel.users.ToList();
@@ -34,6 +40,8 @@ namespace WPFForme.Pages
             Gen.ItemsSource = genders;
             Gen.SelectedValuePath = "id";
             Gen.DisplayMemberPath = "gender";
+            pgPanel.Visibility = Visibility.Hidden;
+            DataContext = pc;
         }
         private void lbTraits_Loaded(object sender, RoutedEventArgs e)
         {
@@ -119,7 +127,7 @@ namespace WPFForme.Pages
             Gen.SelectedItem = null;
             txtNameFilter.Text = null;
 
-            List<users> lt = users.ToList();
+            lt = users.ToList();
             lbUsersList.ItemsSource = lt;
 
         }
@@ -127,117 +135,170 @@ namespace WPFForme.Pages
         {
             e.Handled = !(Char.IsDigit(e.Text, 0));
         }
-        int currpg = 1;
         private void GoPage_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            try
+            TextBlock tb = (TextBlock)sender;//определяем, какой текстовый блок был нажат           
+                                             //изменение номера страници при нажатии на кнопку
+            switch (tb.Uid)
             {
-                TextBlock tb = (TextBlock)sender;
-                int countList = users.Count;
-                int countzap = Convert.ToInt32(txtPageCount.Text);
-                int countpage = countList / countzap;
-
-                switch (tb.Uid)
-                {
-                    case "prev":
-                        currpg--;
-                        break;
-                    case "1":
-                        if (currpg < 3) currpg = 1;
-                        else if (currpg > countpage) currpg = countpage - 4;
-                        else currpg -= 2;
-                        break;
-                    case "2":
-                        if (currpg < 3) currpg = 2;
-                        else if (currpg > countpage) currpg = countpage - 3;
-                        else currpg -= 1;
-                        break;
-                    case "3":
-                        if (currpg < 3) currpg = 3;
-                        else if (currpg > countpage) currpg = countpage - 2;
-                        break;
-                    case "4":
-                        if (currpg < 3) currpg = 4;
-                        else if (currpg > countpage) currpg = countpage - 1;
-                        else currpg++;
-                        break;
-                    case "5":
-                        if (currpg < 3) currpg = 5;
-                        else if (currpg > countpage) currpg = countpage;
-                        else currpg += 2;
-                        break;
-                    case "next":
-                        currpg++;
-                        break;
-                    default:
-                        currpg = 1;
-                        break;
-                }
-
-                if (currpg < 1) currpg = 1;
-                if (currpg >= countpage) currpg = countpage;
-
-                //отрисовка
-                if (currpg < 3)
-                {
-                    txt1.Text = " 1 ";
-                    txt2.Text = " 2 ";
-                    txt3.Text = " 3 ";
-                    txt4.Text = " 4 ";
-                    txt5.Text = " 5 ";
-                }
-                else if (currpg > countpage - 2)
-                {
-                    txt1.Text = " " + (countpage - 4).ToString() + " ";
-                    txt2.Text = " " + (countpage - 3).ToString() + " ";
-                    txt3.Text = " " + (countpage - 2).ToString() + " ";
-                    txt4.Text = " " + (countpage - 1).ToString() + " ";
-                    txt5.Text = " " + (countpage).ToString() + " ";
-
-                }
-                else
-                {
-                    txt1.Text = " " + (currpg - 2).ToString() + " ";
-                    txt2.Text = " " + (currpg - 1).ToString() + " ";
-                    txt3.Text = " " + (currpg).ToString() + " ";
-                    txt4.Text = " " + (currpg + 1).ToString() + " ";
-                    txt5.Text = " " + (currpg + 2).ToString() + " ";
-
-                }
-                txtCurentPage.Text = "Текущая страница: " + (currpg).ToString();
-
-               
-
-                lt = users.Skip(currpg * countzap - countzap).Take(countzap).ToList();
-                lbUsersList.ItemsSource = lt;
+                case "prev":
+                    pc.CurrentPage--;
+                    break;
+                case "next":
+                    pc.CurrentPage++;
+                    break;
+                default:
+                    pc.CurrentPage = Convert.ToInt32(tb.Text);
+                    break;
             }
-            catch
-            {
-                //null
-            }
+
+
+            //определение списка
+            lbUsersList.ItemsSource = lt.Skip(pc.CurrentPage * pc.CountPage - pc.CountPage).Take(pc.CountPage).ToList();
+
+            txtCurrentPage.Text = "Текущая страница: " + (pc.CurrentPage).ToString();
         }
         private void txtPageCount_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                if (txtPageCount.Text == "")
+                pc.CountPage = Convert.ToInt32(txtPageCount.Text);
+                if(pc.CountPage >0)
                 {
-                    lt = users.ToList();
+                    pgPanel.Visibility = Visibility.Visible;
                 }
                 else
-                    lt = users.Take(Convert.ToInt32(txtPageCount.Text)).ToList();
-
-                lbUsersList.ItemsSource = lt;
+                {
+                    pgPanel.Visibility = Visibility.Hidden;
+                    txtCurrentPage.Text = null;
+                }
             }
             catch
             {
-                //null
+                pc.CountPage = lt.Count;
+                pgPanel.Visibility = Visibility.Hidden;
+                txtCurrentPage.Text = null;
             }
+            pc.Countlist = users.Count;
+            lbUsersList.ItemsSource = lt.Skip(0).Take(pc.CountPage).ToList();
         }
+    
         private void DLlL_Click(object sender, RoutedEventArgs e)
         {
             LoadCl.MFrame.Navigate(new Dlltest());
            
+        }
+
+        private void BtmAddImage_Click(object sender, RoutedEventArgs e)
+        {
+            Button BTN = (Button)sender;
+            int ind = Convert.ToInt32(BTN.Uid);
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.DefaultExt = ".jpg"; // задаем расширение по умолчанию
+            openFileDialog.Filter = "Изображения |*.jpg;*.png"; // задаем фильтр на форматы файлов
+            var result = openFileDialog.ShowDialog();
+            if (result == true)//если файл выбран
+            {
+                usersimage avatar = new usersimage();//создаем новый объект usersimage
+                List<usersimage> U = BaseConnect.BaseModel.usersimage.Where(x => x.id_user == ind).ToList();//получаем запись о картинке для текущего пользователя
+                if (U != null)
+                {
+                    foreach (usersimage um in U)
+                    {
+                        if (um.avatar == true)
+                        {
+                            avatar = um;
+                        }
+                    }
+                }
+                if (avatar != null)
+                {
+                    if (MessageBox.Show("Сменить аватар пользователя?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        
+                        System.Drawing.Image UserImage = System.Drawing.Image.FromFile(openFileDialog.FileName);//создаем изображение
+                        ImageConverter IC = new ImageConverter();//конвертер изображения в массив байт
+                        byte[] ByteArr = (byte[])IC.ConvertTo(UserImage, typeof(byte[]));//непосредственно конвертация
+                        usersimage UI = new usersimage() { id_user = ind, image = ByteArr, avatar = true };//создаем новый объект usersimage
+                        avatar.avatar = false;
+                        BaseConnect.BaseModel.usersimage.Add(UI);//добавляем его в модель
+                        BaseConnect.BaseModel.SaveChanges();//синхронизируем с базой
+                        MessageBox.Show("картинка пользователя добавлена в базу");
+                    }
+                    else
+                    {
+                        System.Drawing.Image UserImage = System.Drawing.Image.FromFile(openFileDialog.FileName);//создаем изображение
+                        ImageConverter IC = new ImageConverter();//конвертер изображения в массив байт
+                        byte[] ByteArr = (byte[])IC.ConvertTo(UserImage, typeof(byte[]));//непосредственно конвертация
+                        usersimage UI = new usersimage() { id_user = ind, image = ByteArr, avatar = false };//создаем новый объект usersimage
+                        BaseConnect.BaseModel.usersimage.Add(UI);//добавляем его в модель
+                        BaseConnect.BaseModel.SaveChanges();//синхронизируем с базой
+                        MessageBox.Show("картинка пользователя добавлена в базу");
+                    }
+                }
+                else
+                {
+                    System.Drawing.Image UserImage = System.Drawing.Image.FromFile(openFileDialog.FileName);//создаем изображение
+                    ImageConverter IC = new ImageConverter();//конвертер изображения в массив байт
+                    byte[] ByteArr = (byte[])IC.ConvertTo(UserImage, typeof(byte[]));//непосредственно конвертация
+                    usersimage UI = new usersimage() { id_user = ind, image = ByteArr, avatar = false };//создаем новый объект usersimage
+                    BaseConnect.BaseModel.usersimage.Add(UI);//добавляем его в модель
+                    BaseConnect.BaseModel.SaveChanges();//синхронизируем с базой
+                    MessageBox.Show("картинка пользователя добавлена в базу");
+                }
+            }
+            else
+            {
+                MessageBox.Show("операция выбора изображения отменена");
+            }
+            users = BaseConnect.BaseModel.users.ToList();
+            lbUsersList.ItemsSource = users;
+        }
+
+        private void btnGoToGallery_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UserImage_Loaded(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Image IMG = sender as System.Windows.Controls.Image;
+            int ind = Convert.ToInt32(IMG.Uid);
+            users U = BaseConnect.BaseModel.users.FirstOrDefault(x => x.id == ind);//запись о текущем пользователе
+            usersimage UI = BaseConnect.BaseModel.usersimage.FirstOrDefault(x => x.id_user == ind && x.avatar == true);//получаем запись о картинке для текущего пользователя
+            BitmapImage BI = new BitmapImage();
+            if (UI != null)//если для текущего пользователя существует запись о его катринке
+            {
+
+                if (UI.path != null)//если присутствует путь к картинке
+                {
+                    BI = new BitmapImage(new Uri(UI.path, UriKind.Relative));
+                }
+                else//если присутствуют двоичные данные
+                {
+                    BI.BeginInit();//начать инициализацию BitmapImage (для помещения данных из какого-либо потока)
+                    BI.StreamSource = new MemoryStream(UI.image);//помещаем в источник данных двоичные данные из потока
+                    BI.EndInit();//закончить инициализацию
+                }
+
+            }
+
+            else//если в базе не содержится картинки, то ставим заглушку
+            {
+                switch (U.gender)//в зависимости от пола пользователя устанавливаем ту или иную картинку
+                {
+                    case 1:
+                        BI = new BitmapImage(new Uri(@"/img/male.jpg", UriKind.Relative));
+                        break;
+                    case 2:
+                        BI = new BitmapImage(new Uri(@"/img/female.jpg", UriKind.Relative));
+                        break;
+                    default:
+                        BI = new BitmapImage(new Uri(@"/img/other.jpg", UriKind.Relative));
+                        break;
+                }
+            }
+            IMG.Source = BI;//помещаем картинку в image
         }
     }
 }

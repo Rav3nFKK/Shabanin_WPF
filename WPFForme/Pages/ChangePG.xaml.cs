@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ namespace WPFForme.Pages
     {
         public string LogStr, PassStr;
         bool flag = false;
-
+        int puf;
+        List<usersimage> userImg;
+        List<usersimage> userImgBuf;
         public ChangePG(auth auths)
         {
             InitializeComponent();
@@ -68,6 +71,13 @@ namespace WPFForme.Pages
                 genderLt.DisplayMemberPath = "gender";
                 genderLt.SelectedIndex = auths.users.genders.id - 1;
                 flag = false;
+                userImg = BaseConnect.BaseModel.usersimage.Where(x => x.id_user == auths.users.id && x.avatar == false).ToList();
+                userImgBuf = BaseConnect.BaseModel.usersimage.Where(x => x.id_user == auths.users.id && x.avatar == true).ToList();
+                foreach (usersimage ui in userImgBuf)
+                {
+                    userImg.Insert(0, ui);
+                }
+                puf = auths.id;
 
             }
             catch (Exception e)
@@ -80,11 +90,11 @@ namespace WPFForme.Pages
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
             if (flag == false)
-                LoadCl.MFrame.GoBack();
+                LoadCl.MFrame.Navigate(new UsersListPG());
             else
             {
                 MessageBoxResult otv = MessageBox.Show("Вы хотите сохранить изменения?", "Вы внесли изменения!", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
-                
+
                 if (otv == MessageBoxResult.Yes)
                 {
                     save();
@@ -211,6 +221,107 @@ namespace WPFForme.Pages
             }
 
         }
+
+        private void Image_Loaded(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Image IMG = sender as System.Windows.Controls.Image;
+            int ind = Convert.ToInt32(puf);
+            users U = BaseConnect.BaseModel.users.FirstOrDefault(x => x.id == ind);//запись о текущем пользователе
+            usersimage UI = BaseConnect.BaseModel.usersimage.FirstOrDefault(x => x.id_user == ind && x.avatar == true);//получаем запись о картинке для текущего пользователя
+            BitmapImage BI = new BitmapImage();
+            if (UI != null)//если для текущего пользователя существует запись о его катринке
+            {
+                if (UI.path != null)//если присутствует путь к картинке
+                {
+                    BI = new BitmapImage(new Uri(UI.path, UriKind.Relative));
+                }
+                else//если присутствуют двоичные данные
+                {
+                    BI.BeginInit();//начать инициализацию BitmapImage (для помещения данных из какого-либо потока)
+                    BI.StreamSource = new MemoryStream(userImg[0].image);//помещаем в источник данных двоичные данные из потока
+                    BI.EndInit();//закончить инициализацию
+
+
+                }
+            }
+            else
+            {
+
+                switch (U.gender)
+                {
+                    case 1:
+                        BI = new BitmapImage(new Uri(@"/img/Dog.jpg", UriKind.Relative));
+                        break;
+                    case 2:
+                        BI = new BitmapImage(new Uri(@"/img/Panda.jpg", UriKind.Relative));
+                        break;
+                    default:
+                        BI = new BitmapImage(new Uri(@"/img/unnamed.jpg", UriKind.Relative));
+                        break;
+                }
+            }
+
+
+
+            IMG.Source = BI;
+        }
+        int x;
+        
+        
+        private void imgChange(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            BitmapImage BI2 = new BitmapImage();
+
+            switch (btn.Content)
+            {
+                case "Туда":
+                    if (x < userImg.Count - 1)
+                        x++;
+                    else
+                        x = 0;
+                    if (x < userImg.Count)
+                    {
+                        if (userImg[x].path != null)//если присутствует путь к картинке
+                        {
+                            BI2 = new BitmapImage(new Uri(userImg[x].path, UriKind.Relative));
+                        }
+                        else//если присутствуют двоичные данные
+                        {
+                            BI2.BeginInit();//начать инициализацию BitmapImage (для помещения данных из какого-либо потока)
+                            BI2.StreamSource = new MemoryStream(userImg[x].image);//помещаем в источник данных двоичные данные из потока
+                            BI2.EndInit();//закончить инициализацию
+                        }
+                        Image.Source = BI2;
+                    }
+
+                    break;
+                case "Сюда":
+                    if (x != 0)
+                        x--;
+                    else
+                        x = userImg.Count - 1;
+                    if (x >= 0)
+                    {
+                        if (userImg[x].path != null)//если присутствует путь к картинке
+                        {
+                            BI2 = new BitmapImage(new Uri(userImg[x].path, UriKind.Relative));
+                        }
+                        else//если присутствуют двоичные данные
+                        {
+                            BI2.BeginInit();//начать инициализацию BitmapImage (для помещения данных из какого-либо потока)
+                            BI2.StreamSource = new MemoryStream(userImg[x].image);//помещаем в источник данных двоичные данные из потока
+                            BI2.EndInit();//закончить инициализацию
+                        }
+                        Image.Source = BI2;
+                    }
+
+                    break;
+            }
+        }
+
+
+
         public static void CreateTrait(auth User, int i)
         {
             users_to_traits UTT = new users_to_traits();
